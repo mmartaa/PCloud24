@@ -1,0 +1,7 @@
+flask
+flask-login
+requests
+google-cloud-storage
+google-cloude-firestore
+pandas
+io
