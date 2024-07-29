@@ -2,6 +2,6 @@ flask
 flask-login
 requests
 google-cloud-storage
-google-cloude-firestore
+google-cloud-firestore
 pandas
 io

@@ -126,7 +126,7 @@ def add_data():
 
 
 
-def read_csv_from_gcs(bucket_name, blob_name):
+def leggi_csv(bucket_name, blob_name):
     """Read a CSV file from Google Cloud Storage and return a DataFrame."""
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(blob_name)
@@ -135,7 +135,7 @@ def read_csv_from_gcs(bucket_name, blob_name):
     return df
 
 
-def upload_data_to_firestore(collection_name, data):
+def upload_to_firestore(collection_name, data):
     """Upload data to Firestore."""
     collection_ref = db.collection(collection_name)
     for record in data.to_dict(orient='records'):
@@ -146,10 +146,10 @@ def upload_data_to_firestore(collection_name, data):
 def main(bucket_name, file_info):
     for blob_name, collection_name in file_info.items():
         # Step 1: Read the CSV file from GCS
-        df = read_csv_from_gcs(bucket_name, blob_name)
+        df = leggi_csv(bucket_name, blob_name)
 
         # Step 2: Upload data to Firestore
-        upload_data_to_firestore(collection_name, df)
+        upload_to_firestore(collection_name, df)
 
 
 '''
