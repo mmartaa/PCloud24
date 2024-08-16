@@ -190,8 +190,13 @@ def upload_csv_to_firestore(bucket_name, files):
 
     for file_name in files:
         blob = bucket.blob(file_name)
+
+        #scarica il contenuto come linea di testo
         content = blob.download_as_text()
-        df = pd.read_csv(io.StringIO(content))
+
+        testo = io.StringIO(content)
+
+        df = pd.read_csv(testo)
 
         # Nome della collection basato sul nome del file
         collection_name = os.path.splitext(file_name)[0]
@@ -200,12 +205,13 @@ def upload_csv_to_firestore(bucket_name, files):
         for index, row in df.iterrows():
             collection_ref.collection('data').add(row.to_dict())
 
+
 if __name__ == 'main':
+    app.run(host='0.0.0.0', port=80, debug=True)
+
     # Specifica il nome del bucket e la lista dei file CSV da caricare
     bucket_name = 'pcloud24_1'
     files = ['Carla.csv', 'Francesco.csv', 'Lalla.csv', 'Luciano.csv']
 
     # Chiamata manuale alla funzione per caricare i file in Firestore
     upload_csv_to_firestore(bucket_name, files)
-
-    app.run(debug=True)
