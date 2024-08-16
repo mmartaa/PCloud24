@@ -5,8 +5,6 @@ from secret import secret_key
 from google.cloud import firestore
 from google.cloud import storage
 import pandas as pd
-import os
-import io
 
 
 db = 'livelyageing'
@@ -97,42 +95,8 @@ def get_data_from_gcstorage():
     blob = bucket.blob(blobName)                #assegno il nome del file di destinazione
     blob.download_to_filename(dumpPath)         #scarico il file dal cloud
 
-
-
-
-'''
-# Funzione per caricare CSV dal cloud storage e inserire i dati in Firestore
-def upload_csv_to_firestore(bucket_name, files):
-    bucket = storage_client.bucket(bucket_name)
-
-    for file_name in files:
-        blob = bucket.blob(file_name)
-
-        #scarica il contenuto come linea di testo
-        content = blob.download_as_text()
-
-        testo = io.StringIO(content)
-
-        df = pd.read_csv(testo)
-
-        # Nome della collection basato sul nome del file
-        collection_name = os.path.splitext(file_name)[0]
-        collection_ref = db.collection(db).document(collection_name)
-
-        for index, row in df.iterrows():
-            collection_ref.collection('data').add(row.to_dict())
-'''
+    print("download")
 
 
 if __name__ == 'main':
     app.run(host='0.0.0.0', port=80, debug=True)
-
-
-'''
-    # Specifica il nome del bucket e la lista dei file CSV da caricare
-    bucket_name = 'pcloud24_1'
-    files = ['Carla.csv', 'Francesco.csv', 'Lalla.csv', 'Luciano.csv']
-
-    # Chiamata manuale alla funzione per caricare i file in Firestore
-    upload_csv_to_firestore(bucket_name, files)
-'''
